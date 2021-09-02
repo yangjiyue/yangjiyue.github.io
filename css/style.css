@@ -529,6 +529,12 @@ Content
   padding-left: 50px;
   padding-right: 50px; }
 
+.container-post {
+  max-width: 750px;
+  margin: 0 auto;
+  padding-left: 50px;
+  padding-right: 50px; }
+
 .inside-wrapper {
   max-width: 920px;
   margin: 0 auto;

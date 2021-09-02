@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="杨霁月的不日常阐述">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="John Doe">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="Docker学习笔记">
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="杨霁月的不日常阐述">
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="一个闲散人员的自我修养">
+  <!--Type page-->
+  
+      <meta property="og:type" content="article">
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>Docker学习笔记 - 一个闲散人员的自我修养</title>
+
+
+  <link rel="shortcut icon" href="https://yangjiyue.github.io/bitbug_favicon.ico">
+
+  <!-- Custom CSS/Sass -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+</head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="/images/logo.png" alt="一个闲散人员的自我修养" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a  href="/.">
+                
+                  主页
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container-post">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            Docker学习笔记
+            
+          </h1>
+          <p class="posted-on">
+          2021-09-02
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/工具/" rel="tag">
+                  工具
+                </a>
+              
+                <a href="/tags/运维/" rel="tag">
+                  运维
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h1 id="docker简述"><a class="markdownIt-Anchor" href="#docker简述"></a> Docker简述</h1>
+<p>根据<a href="https://docs.docker.com/get-started/overview/" target="_blank" rel="noopener">Docker官方文档</a>整理</p>
+<p>[TOC]</p>
+<h2 id="应用场景"><a class="markdownIt-Anchor" href="#应用场景"></a> 应用场景</h2>
+<p><strong>快速的交付应用</strong></p>
+<ul>
+<li>开发者使用Docker容器将本地编写的代码与其他同事分享</li>
+<li>使用Docker将应用程序推送到测试环境中，并执行自动和手动测试。</li>
+<li>当开发人员发现bug时，他们可以在开发环境中修复它们，并将它们重新部署到测试环境中进行测试和验证。</li>
+<li>测试完成后，向客户提供修复程序就像将更新的镜像推送到生产环境一样简单。</li>
+</ul>
+<p><strong>快速部署和扩展</strong></p>
+<p>Docker基于容器的平台允许高度可移植的工作负载。Docker容器可以在开发人员的本地笔记本电脑、数据中心的物理或虚拟机、云提供商或混合环境中运行。</p>
+<p>Docker的可移植性和轻量级特性还使其能够轻松地动态管理工作负载，根据业务需求以近乎实时的方式扩展或删除应用程序和服务。</p>
+<p><strong>同样的硬件使用docker可以提高负载</strong></p>
+<p>Docker重量轻，速度快。它为基于虚拟机监控程序的虚拟机提供了一种可行、经济高效的替代方案，因此您可以使用更多的计算能力来实现业务目标。Docker非常适合高密度环境和中小型部署，在这些环境中，您需要用更少的资源做更多的工作。</p>
+<h2 id="docker的架构"><a class="markdownIt-Anchor" href="#docker的架构"></a> Docker的架构</h2>
+<p><img src="https://docs.docker.com/engine/images/architecture.svg" alt="https://docs.docker.com/engine/images/architecture.svg"></p>
+<p><strong>Docker daemon 守护进程</strong></p>
+<p><code>dockerd</code> <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 侦听Docker API请求并管理Docker的对象，如镜像、容器、网络和卷。守护进程还可以与其他守护进程通信以管理Docker服务。</p>
+<p>侦听Docker API请求并管理Docker对象，如镜像、容器、网络和卷。守护进程还可以与其他守护进程通信以管理Docker服务。</p>
+<p><strong>Docker client 客户端</strong></p>
+<p><code>docker</code>  是许多Docker用户与Docker交互的主要方式。当使用诸如docker run之类的命令时，客户机将这些命令发送给<code>dockerd</code>，<code>dockerd</code>将执行这些命令。<code>docker</code>命令使用docker API。Docker客户端可以与多个守护进程通信。</p>
+<p><strong>Docker registries 镜像仓库</strong></p>
+<p>Docker registries 存储Docker镜像。Docker Hub是任何人都可以使用的公共镜像源，默认情况下，Docker在Docker Hub上查找镜像源。您甚至可以创建自己的私有仓库。</p>
+<p><strong>Docker objects</strong></p>
+<p>使用Docker时，您正在创建和使用图像、容器、网络、卷、插件和其他对象。本节简要概述了其中一些对象。</p>
+<ul>
+<li>
+<p><strong>Images 镜像</strong></p>
+<p>镜像是只读模板(标准的环境)，其中包含创建Docker容器的说明。</p>
+</li>
+<li>
+<p><strong>Containers 容器</strong></p>
+<p>容器是镜像的可运行实例。您可以使用Docker API或CLI创建、启动、停止、移动或删除容器。您可以将容器连接到一个或多个网络，将存储连接到容器，甚至可以基于其当前状态创建新镜像</p>
+</li>
+</ul>
+<h1 id="docker命令"><a class="markdownIt-Anchor" href="#docker命令"></a> Docker命令</h1>
+<h2 id="基本命令"><a class="markdownIt-Anchor" href="#基本命令"></a> 基本命令</h2>
+<p>参考<a href="https://docs.docker.com/engine/reference/commandline/docker/" target="_blank" rel="noopener">Docker官方手册</a></p>
+<p><strong>帮助命令</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker 命令 --help		#该命令的寿命手册 学习命令非常好的方法  </span><br><span class="line">docker version		#查看版本信息</span><br><span class="line">docker info		#查看system级别的基本信息</span><br></pre></td></tr></table></figure></div>
+<h2 id="镜像命令"><a class="markdownIt-Anchor" href="#镜像命令"></a> 镜像命令</h2>
+<p><strong>docker images 			#查看本地镜像</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@C20210630109041 ~] docker images 			#查看本地镜像</span><br><span class="line">REPOSITORY    TAG       IMAGE ID       CREATED        SIZE</span><br><span class="line">mysql         latest    5a4e492065c7   2 weeks ago    514MB</span><br><span class="line">hello-world   latest    d1165f221234   6 months ago   13.3kB</span><br><span class="line">centos        latest    300e315adb2f   8 months ago   209MB</span><br><span class="line">REPOSITORY		#镜像源</span><br><span class="line">TAG		#标签</span><br><span class="line">IMAGE ID		#镜像ID</span><br><span class="line">CREATE		#镜像源的创建时间</span><br><span class="line">SIZE		#大小</span><br><span class="line"><span class="meta">#</span><span class="bash">可选想</span></span><br><span class="line">-a, --all		#列出所有镜像</span><br><span class="line">-q, --quiet		#只显示镜像ID</span><br></pre></td></tr></table></figure></div>
+<p><strong>docker search 镜像名		#搜索远程仓库的镜像源</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@C20210630109041 ~]# docker search mysql</span><br><span class="line">NAME                              DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED</span><br><span class="line">mysql                             MySQL is a widely used, open-source relation…   11354     [OK]       </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">可选项</span></span><br><span class="line">Options:</span><br><span class="line">  -f, --filter filter   Filter output based on conditions provided</span><br><span class="line">  		#--filter=STARS=3000 搜索stars数超过3000的镜像源</span><br><span class="line">      --format string   Pretty-print search using a Go template</span><br><span class="line">      --limit int       Max number of search results (default 25)</span><br><span class="line">      	#限制搜索数量 默认25条</span><br><span class="line">      --no-trunc        Don't truncate output</span><br></pre></td></tr></table></figure></div>
+<p><strong>docker pull 镜像名[:tag]		#镜像下载,tag默认为latest</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@C20210630109041 ~]# docker pull mysql</span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from library/mysql		#分层下载,docker image的核心 联合文件系统</span><br><span class="line">e1acddbe380c: Pull complete 			#其他镜像如果有可用的文件就不需要下载</span><br><span class="line">bed879327370: Pull complete </span><br><span class="line">03285f80bafd: Pull complete </span><br><span class="line">ccc17412a00a: Pull complete </span><br><span class="line">1f556ecc09d1: Pull complete </span><br><span class="line">adc5528e468d: Pull complete </span><br><span class="line">1afc286d5d53: Pull complete </span><br><span class="line">6c724a59adff: Pull complete </span><br><span class="line">0f2345f8b0a3: Downloading   60.9MB/104.4MB</span><br><span class="line">c8461a25b23b: Download complete </span><br><span class="line">3adb49279bed: Download complete </span><br><span class="line">77f22cd6c363: Download complete </span><br><span class="line">Digest: sha256:d45561a65aba6edac77be36e0a53f0c1fba67b951cb728348522b671ad63f926 #签名</span><br><span class="line">Status: Downloaded newer image for mysql:latest</span><br><span class="line">docker.io/library/mysql:latest #真实的镜像源地址</span><br></pre></td></tr></table></figure></div>
+<p><strong>docker rmi 镜像名[:tag]		#镜像删除</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@C20210630109041 ~] docker rmi hello-world #</span><br><span class="line">Untagged: hello-world:latest</span><br><span class="line">Untagged: hello-world@sha256:7d91b69e04a9029b99f3585aaaccae2baa80bcf318f4a5d2165a9898cd2dc0a1</span><br><span class="line">Deleted: sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726</span><br><span class="line">Deleted: sha256:f22b99068db93900abe17f7f5e09ec775c2826ecfe9db961fea68293744144bd</span><br><span class="line"></span><br><span class="line">[root@C20210630109041 ~] docker rmi -f 镜像ID #删除指定镜像</span><br><span class="line">[root@C20210630109041 ~] docker rmi -f $(docker images -aq)	#删除全部容器</span><br></pre></td></tr></table></figure></div>
+<h2 id="容器命令"><a class="markdownIt-Anchor" href="#容器命令"></a> 容器命令</h2>
+<p><strong>说明:有了镜像才可以创建容器</strong></p>
+<p><strong>新建容器并启动</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">docker run [可选参数] image</span><br><span class="line"><span class="meta">#</span><span class="bash">参数说明</span></span><br><span class="line">--name="container_name" 容器名字</span><br><span class="line">-d		后台运行</span><br><span class="line">-it		使用交互方式运行,进入容器查看内容</span><br><span class="line">-p		指定容器端口 -p 80:80</span><br><span class="line">	-p ip:主机端口:容器端口</span><br><span class="line">	-p 主机端口:容器端口 </span><br><span class="line">	-p 容器端口</span><br><span class="line">-P		随机指定端口</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">启动并进入容器</span></span><br><span class="line">[root@C20210630109041 ~]# docker run -it centos /bin/bash</span><br><span class="line">[root@b9ce3eecaedf /]#   进入容器  ,exit 退出</span><br></pre></td></tr></table></figure></div>
+<p><strong>列出所有运行的容器</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker ps 命令</span></span><br><span class="line">-a --all #列出当前正在云心的容器+带出历史运行过得容器</span><br><span class="line">-n=?	#显示最近创建的容器,=数量</span><br><span class="line">-q 		#只显示容器编号</span><br><span class="line">[root@C20210630109041 ~]# docker ps -a</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS                            PORTS     NAMES</span><br><span class="line">b9ce3eecaedf   centos    "/bin/bash"   3 minutes ago   Exited (127) About a minute ago             heuristic_varahamihira</span><br><span class="line">018057fdcefd   centos    "/bin/bash"   2 days ago      Up 2 days                                   flamboyant_pare</span><br><span class="line">24f713f3d94c   centos    "/bin/bash"   2 days ago      Up 2 days                                   heuristic_curie</span><br></pre></td></tr></table></figure></div>
+<p><strong>退出容器</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exit		#直接容器停止并退出</span><br><span class="line">ctrl+p+q	#容器不停止退出</span><br></pre></td></tr></table></figure></div>
+<p><strong>删除容器</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rm 容器id		#删除指定的容器,不能删除正在运行的容器,强删-f</span><br><span class="line">docker rm -f $(docker ps -aq) #删除所有容器</span><br><span class="line">docker ps -a -q|xargs docker rm #删除所有容器</span><br></pre></td></tr></table></figure></div>
+<p><strong>启动和停止容器的操作</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker start 容器id		#启动容器</span><br><span class="line">docker restart 容器id		#重启容器</span><br><span class="line">docker stop 容器id		#停止正在运行的容器</span><br><span class="line">docker kill 容器id 		#强制停止当前容器</span><br></pre></td></tr></table></figure></div>
+<h2 id="常用其他命令"><a class="markdownIt-Anchor" href="#常用其他命令"></a> 常用其他命令</h2>
+<p><strong>后台启动容器</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@C20210630109041 ~] docker run -d centos</span><br><span class="line"><span class="meta">#</span><span class="bash">docker后台运行,就必须要有一个前台进程,docker在没有应用的时候会自动停止</span></span><br></pre></td></tr></table></figure></div>
+<p><strong>查看日志</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@C20210630109041 ~] docker run -d centos /bin/sh -c "while true;do echo $(date +%H:%M:%s);sleep 1;done"</span><br><span class="line">a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c</span><br><span class="line">[root@C20210630109041 ~] docker ps</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES</span><br><span class="line">a5e2518a56d3   centos    "/bin/sh -c 'while t…"   4 seconds ago   Up 2 seconds             beautiful_wiles</span><br><span class="line">[root@C20210630109041 ~] docker logs -f -t a5e2518a56d3</span><br><span class="line">2021-09-02T03:23:00.381947179Z 11:22:1630552979</span><br><span class="line">2021-09-02T03:23:01.405247418Z 11:22:1630552979</span><br><span class="line"><span class="meta">#</span><span class="bash">显示日志</span></span><br><span class="line">	-tf			#显示日志</span><br><span class="line">	--tail number  	#输出条数</span><br></pre></td></tr></table></figure></div>
+<p><strong>查看容器进程的信息</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">docker top 容器ID</span></span><br><span class="line">[root@C20210630109041 ~] docker top a5e2518a56d3</span><br><span class="line">UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD</span><br><span class="line">root                15959               15936               0                   11:22               ?                   00:00:00            /bin/sh -c while true;do echo 11:22:1630552979;sleep 1;done</span><br><span class="line">root                16324               15959               0                   11:28               ?                   00:00:00            /usr/bin/coreutils --coreutils-prog-shebang=sleep /usr/bin/sleep 1</span><br></pre></td></tr></table></figure></div>
+<p><strong>查看镜像元数据</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">docker inspect 容器ID</span></span><br><span class="line">[root@C20210630109041 ~]docker inspect a5e2518a56d3</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        "Id": "a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c",</span><br><span class="line">        "Created": "2021-09-02T03:22:59.765173447Z",</span><br><span class="line">        "Path": "/bin/sh",</span><br><span class="line">        "Args": [  #应该是argument的缩写 参数</span><br><span class="line">            "-c",</span><br><span class="line">            "while true;do echo 11:22:1630552979;sleep 1;done"</span><br><span class="line">        ],</span><br><span class="line">        "State": &#123;  #容器当前状态</span><br><span class="line">            "Status": "running",</span><br><span class="line">            "Running": true,</span><br><span class="line">            "Paused": false,</span><br><span class="line">            "Restarting": false,</span><br><span class="line">            "OOMKilled": false,</span><br><span class="line">            "Dead": false,</span><br><span class="line">            "Pid": 15959,</span><br><span class="line">            "ExitCode": 0,</span><br><span class="line">            "Error": "",</span><br><span class="line">            "StartedAt": "2021-09-02T03:23:00.383399342Z",</span><br><span class="line">            "FinishedAt": "0001-01-01T00:00:00Z"</span><br><span class="line">        &#125;,</span><br><span class="line">        "Image": 	#镜像来源	 "sha256:300e315adb2f96afe5f0b2780b87f28ae95231fe3bdd1e16b9ba606307728f55",</span><br><span class="line">        "ResolvConfPath": "/var/lib/docker/containers/a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c/resolv.conf",</span><br><span class="line">        "HostnamePath": "/var/lib/docker/containers/a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c/hostname",</span><br><span class="line">        "HostsPath": "/var/lib/docker/containers/a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c/hosts",</span><br><span class="line">        "LogPath": "/var/lib/docker/containers/a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c/a5e2518a56d34fea114ca39e4dc40811f423aec11b4c1fb2dbd72dd1ac8d138c-json.log",</span><br><span class="line">        "Name": "/beautiful_wiles",</span><br><span class="line">        "RestartCount": 0,</span><br><span class="line">        "Driver": "overlay2",</span><br><span class="line">        "Platform": "linux",</span><br><span class="line">        "MountLabel": "",</span><br><span class="line">        "ProcessLabel": "",</span><br><span class="line">        "AppArmorProfile": "",</span><br><span class="line">        "ExecIDs": null,</span><br><span class="line">        "HostConfig": &#123;  #主机配置信息</span><br><span class="line">            "Binds": null,</span><br><span class="line">            "ContainerIDFile": "",</span><br><span class="line">            "LogConfig": &#123;</span><br><span class="line">                "Type": "json-file",</span><br><span class="line">                "Config": &#123;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            "NetworkMode": "default",</span><br><span class="line">            "PortBindings": &#123;&#125;,</span><br><span class="line">            "RestartPolicy": &#123;</span><br><span class="line">                "Name": "no",</span><br><span class="line">                "MaximumRetryCount": 0</span><br><span class="line">            &#125;,</span><br><span class="line">            "AutoRemove": false,</span><br><span class="line">            "VolumeDriver": "",</span><br><span class="line">            "VolumesFrom": null,</span><br><span class="line">            "CapAdd": null,</span><br><span class="line">            "CapDrop": null,</span><br><span class="line">            "CgroupnsMode": "host",</span><br><span class="line">            "Dns": [],</span><br><span class="line">            "DnsOptions": [],</span><br><span class="line">            "DnsSearch": [],</span><br><span class="line">            "ExtraHosts": null,</span><br><span class="line">            "GroupAdd": null,</span><br><span class="line">            "IpcMode": "private",</span><br><span class="line">            "Cgroup": "",</span><br><span class="line">            "Links": null,</span><br><span class="line">            "OomScoreAdj": 0,</span><br><span class="line">            "PidMode": "",</span><br><span class="line">            "Privileged": false,</span><br><span class="line">            "PublishAllPorts": false,</span><br><span class="line">            "ReadonlyRootfs": false,</span><br><span class="line">            "SecurityOpt": null,</span><br><span class="line">            "UTSMode": "",</span><br><span class="line">            "UsernsMode": "",</span><br><span class="line">            "ShmSize": 67108864,</span><br><span class="line">            "Runtime": "runc",</span><br><span class="line">            "ConsoleSize": [</span><br><span class="line">                0,</span><br><span class="line">                0</span><br><span class="line">            ],</span><br><span class="line">            "Isolation": "",</span><br><span class="line">            "CpuShares": 0,</span><br><span class="line">            "Memory": 0,</span><br><span class="line">            "NanoCpus": 0,</span><br><span class="line">            "CgroupParent": "",</span><br><span class="line">            "BlkioWeight": 0,</span><br><span class="line">            "BlkioWeightDevice": [],</span><br><span class="line">            "BlkioDeviceReadBps": null,</span><br><span class="line">            "BlkioDeviceWriteBps": null,</span><br><span class="line">            "BlkioDeviceReadIOps": null,</span><br><span class="line">            "BlkioDeviceWriteIOps": null,</span><br><span class="line">            "CpuPeriod": 0,</span><br><span class="line">            "CpuQuota": 0,</span><br><span class="line">            "CpuRealtimePeriod": 0,</span><br><span class="line">            "CpuRealtimeRuntime": 0,</span><br><span class="line">            "CpusetCpus": "",</span><br><span class="line">            "CpusetMems": "",</span><br><span class="line">            "Devices": [],</span><br><span class="line">            "DeviceCgroupRules": null,</span><br><span class="line">            "DeviceRequests": null,</span><br><span class="line">            "KernelMemory": 0,</span><br><span class="line">            "KernelMemoryTCP": 0,</span><br><span class="line">            "MemoryReservation": 0,</span><br><span class="line">            "MemorySwap": 0,</span><br><span class="line">            "MemorySwappiness": null,</span><br><span class="line">            "OomKillDisable": false,</span><br><span class="line">            "PidsLimit": null,</span><br><span class="line">            "Ulimits": null,</span><br><span class="line">            "CpuCount": 0,</span><br><span class="line">            "CpuPercent": 0,</span><br><span class="line">            "IOMaximumIOps": 0,</span><br><span class="line">            "IOMaximumBandwidth": 0,</span><br><span class="line">            "MaskedPaths": [</span><br><span class="line">                "/proc/asound",</span><br><span class="line">                "/proc/acpi",</span><br><span class="line">                "/proc/kcore",</span><br><span class="line">                "/proc/keys",</span><br><span class="line">                "/proc/latency_stats",</span><br><span class="line">                "/proc/timer_list",</span><br><span class="line">                "/proc/timer_stats",</span><br><span class="line">                "/proc/sched_debug",</span><br><span class="line">                "/proc/scsi",</span><br><span class="line">                "/sys/firmware"</span><br><span class="line">            ],</span><br><span class="line">            "ReadonlyPaths": [</span><br><span class="line">                "/proc/bus",</span><br><span class="line">                "/proc/fs",</span><br><span class="line">                "/proc/irq",</span><br><span class="line">                "/proc/sys",</span><br><span class="line">                "/proc/sysrq-trigger"</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        "GraphDriver": &#123;</span><br><span class="line">            "Data": &#123;</span><br><span class="line">                "LowerDir": "/var/lib/docker/overlay2/bd84f91b624069a73ba809f0eaaab3e71046328e575384c7685ba41ae472a98c-init/diff:/var/lib/docker/overlay2/f33eb37c941c04bec5871160b390a8c41aec5fb3c066908706e133085ee0fcb0/diff",</span><br><span class="line">                "MergedDir": "/var/lib/docker/overlay2/bd84f91b624069a73ba809f0eaaab3e71046328e575384c7685ba41ae472a98c/merged",</span><br><span class="line">                "UpperDir": "/var/lib/docker/overlay2/bd84f91b624069a73ba809f0eaaab3e71046328e575384c7685ba41ae472a98c/diff",</span><br><span class="line">                "WorkDir": "/var/lib/docker/overlay2/bd84f91b624069a73ba809f0eaaab3e71046328e575384c7685ba41ae472a98c/work"</span><br><span class="line">            &#125;,</span><br><span class="line">            "Name": "overlay2"</span><br><span class="line">        &#125;,</span><br><span class="line">        "Mounts": [], #挂载信息</span><br><span class="line">        "Config": &#123;		#容器配置信息</span><br><span class="line">            "Hostname": "a5e2518a56d3",</span><br><span class="line">            "Domainname": "",</span><br><span class="line">            "User": "",</span><br><span class="line">            "AttachStdin": false,</span><br><span class="line">            "AttachStdout": false,</span><br><span class="line">            "AttachStderr": false,</span><br><span class="line">            "Tty": false,</span><br><span class="line">            "OpenStdin": false,</span><br><span class="line">            "StdinOnce": false,</span><br><span class="line">            "Env": [</span><br><span class="line">                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"</span><br><span class="line">            ],</span><br><span class="line">            "Cmd": [</span><br><span class="line">                "/bin/sh",</span><br><span class="line">                "-c",</span><br><span class="line">                "while true;do echo 11:22:1630552979;sleep 1;done"</span><br><span class="line">            ],</span><br><span class="line">            "Image": "centos",</span><br><span class="line">            "Volumes": null,</span><br><span class="line">            "WorkingDir": "",</span><br><span class="line">            "Entrypoint": null,</span><br><span class="line">            "OnBuild": null,</span><br><span class="line">            "Labels": &#123;</span><br><span class="line">                "org.label-schema.build-date": "20201204",</span><br><span class="line">                "org.label-schema.license": "GPLv2",</span><br><span class="line">                "org.label-schema.name": "CentOS Base Image",</span><br><span class="line">                "org.label-schema.schema-version": "1.0",</span><br><span class="line">                "org.label-schema.vendor": "CentOS"</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        "NetworkSettings": &#123; 	#网络设置信息</span><br><span class="line">            "Bridge": "",</span><br><span class="line">            "SandboxID": "3277a805b86f249fa9e3dee294288a8681eeb7dd1a77b66a3f2ea2df4ff4db5f",</span><br><span class="line">            "HairpinMode": false,</span><br><span class="line">            "LinkLocalIPv6Address": "",</span><br><span class="line">            "LinkLocalIPv6PrefixLen": 0,</span><br><span class="line">            "Ports": &#123;&#125;,</span><br><span class="line">            "SandboxKey": "/var/run/docker/netns/3277a805b86f",</span><br><span class="line">            "SecondaryIPAddresses": null,</span><br><span class="line">            "SecondaryIPv6Addresses": null,</span><br><span class="line">            "EndpointID": "67608943ea98113ba9ce422f1f76c35553ee13582baa36cb1a4e5db700d1d822",</span><br><span class="line">            "Gateway": "172.17.0.1",</span><br><span class="line">            "GlobalIPv6Address": "",</span><br><span class="line">            "GlobalIPv6PrefixLen": 0,</span><br><span class="line">            "IPAddress": "172.17.0.4",</span><br><span class="line">            "IPPrefixLen": 16,</span><br><span class="line">            "IPv6Gateway": "",</span><br><span class="line">            "MacAddress": "02:42:ac:11:00:04",</span><br><span class="line">            "Networks": &#123;</span><br><span class="line">                "bridge": &#123;</span><br><span class="line">                    "IPAMConfig": null,</span><br><span class="line">                    "Links": null,</span><br><span class="line">                    "Aliases": null,</span><br><span class="line">                    "NetworkID": "7196e839636fdaedb074700add84fe655616a165ffe5dd9bb2a3e51794582457",</span><br><span class="line">                    "EndpointID": "67608943ea98113ba9ce422f1f76c35553ee13582baa36cb1a4e5db700d1d822",</span><br><span class="line">                    "Gateway": "172.17.0.1",</span><br><span class="line">                    "IPAddress": "172.17.0.4",</span><br><span class="line">                    "IPPrefixLen": 16,</span><br><span class="line">                    "IPv6Gateway": "",</span><br><span class="line">                    "GlobalIPv6Address": "",</span><br><span class="line">                    "GlobalIPv6PrefixLen": 0,</span><br><span class="line">                    "MacAddress": "02:42:ac:11:00:04",</span><br><span class="line">                    "DriverOpts": null</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></div>
+<p><strong>进入当前正在运行的容器</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">我们通常容器都是使用后台运行.需要进入容器,修改一些配置</span></span><br><span class="line"><span class="meta">#</span><span class="bash">方式一</span></span><br><span class="line">docker exec -it 容器id bashshell #进入容器后开启新的终端</span><br><span class="line">[root@C20210630109041 ~]  docker exec -it a5e2518a56d3 /bin/bash </span><br><span class="line"><span class="meta">#</span><span class="bash">方式二</span></span><br><span class="line">[root@C20210630109041 ~] docker attach  a5e2518a56d3 #进入容器正在执行的终端</span><br></pre></td></tr></table></figure></div>
+<p><strong>从容器内拷贝文件到主机</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">docker cp 容器id:容器内路径 主机目的路径</span></span><br><span class="line">[root@C20210630109041 ~] docker cp b60bfdc3e973:/home/yangjiyue.php ./</span><br><span class="line"><span class="meta">#</span><span class="bash">拷贝是一个手动过程,还可以是使用 -v 卷的技术,可以实现(同步目录内容)</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h2>
+<p><img src="https://z3.ax1x.com/2021/09/02/hr2R4H.png" alt="commands"></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="SHELL"><figure class="iseeu highlight /shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">当前shell下 attach 连接指定运行镜像</span></span><br><span class="line">attach      Attach local standard input, output, and error streams to a running container</span><br><span class="line">build       Build an image from a Dockerfile	#通过docker定制镜像</span><br><span class="line">commit      Create a new image from a container's changes	#提交当前容器为新的镜像</span><br><span class="line">cp          Copy files/folders between a container and the local filesystem	#从容器中拷贝指定文件或者目录到宿主机中</span><br><span class="line">create      Create a new container		#创建一个新的容器,同run,但不启动容器</span><br><span class="line">diff        Inspect changes to files or directories on a container's filesystem #查看docker容器变化</span><br><span class="line">events      Get real time events from the server		#查看docker服务获取容器实时事件</span><br><span class="line">exec        Run a command in a running container		#从docker服务获取容器实时事件</span><br><span class="line">export      Export a container's filesystem as a tar archive #导出容器的内容流作为一个tar归档文件</span><br><span class="line">history     Show the history of an image	#展示一个镜像形成的历史</span><br><span class="line">images      List images	#列出系统当前镜像</span><br><span class="line">import      Import the contents from a tarball to create a filesystem image #从tar包中的内容创建一个新的文件系统镜像</span><br><span class="line">info        Display system-wide information </span><br><span class="line">inspect     Return low-level information on Docker objects</span><br><span class="line">kill        Kill one or more running containers</span><br><span class="line">load        Load an image from a tar archive or STDIN #从tar包中加载一个镜像</span><br><span class="line">login       Log in to a Docker registry </span><br><span class="line">logout      Log out from a Docker registry</span><br><span class="line">logs        Fetch the logs of a container</span><br><span class="line">pause       Pause all processes within one or more containers #暂停容器</span><br><span class="line">port        List port mappings or a specific mapping for the container #查看镜像端口对应的容器内部源端口</span><br><span class="line">ps          List containers		#列出容器列表</span><br><span class="line">pull        Pull an image or a repository from a registry</span><br><span class="line">push        Push an image or a repository to a registry</span><br><span class="line">rename      Rename a container</span><br><span class="line">restart     Restart one or more containers</span><br><span class="line">rm          Remove one or more containers</span><br><span class="line">rmi         Remove one or more images</span><br><span class="line">run         Run a command in a new container</span><br><span class="line">save        Save one or more images to a tar archive (streamed to STDOUT by default) #保存一个镜像为一个tar包</span><br><span class="line">search      Search the Docker Hub for images</span><br><span class="line">start       Start one or more stopped containers</span><br><span class="line">stats       Display a live stream of container(s) resource usage statistics</span><br><span class="line">stop        Stop one or more running containers</span><br><span class="line">tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE #给镜像打标签</span><br><span class="line">top         Display the running processes of a container	#查看容器中运行的进程信息</span><br><span class="line">unpause     Unpause all processes within one or more containers #取消暂停容器</span><br><span class="line">update      Update configuration of one or more containers	</span><br><span class="line">version     Show the Docker version information</span><br><span class="line">wait        Block until one or more containers stop, then print their exit codes #截取容器停止时的退出状态值</span><br></pre></td></tr></table></figure></div>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>此处标亮,代表这是一个应用程序,后续如同 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">留言</h1> -->
+
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+      
+        <div class="nav-next">
+          <a href="/2021/08/31/Markdown/" rel="prev">下一页 <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          杨霁月的不日常阐述
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">与我联系</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/yangjiyue" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:hi@yangjiyue.com" class="icon icon-mail" target="_blank">mail</a>
+            
+              <a href="https://weibo.com/u/2514012261" class="icon icon-weibo" target="_blank">weibo</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">站内搜索</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>一个闲散人员的自我修养 &copy; 2021</span>
+    
+      <span class="split">|</span>
+      <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> with Theme <a href="https://github.com/yangjiyue" target="_blank">Daily</a></span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+<script src="/js/app.js"></script>
+
+
+
+
+
+</body>
+
+</html>
