@@ -863,8 +863,9 @@ pre {
 
 code {
   padding: 0.2em 0.4em;
-  background-color: #efefef;
-  border-radius: 3px; }
+  background-color: #35621b;
+  border-radius: 3px;
+  word-break: break-all; }
 
 pre .line {
   min-height: 1em; }
